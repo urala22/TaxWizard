@@ -1,0 +1,178 @@
+/* Custom CSS styles for the Tax Filing Assistant */
+
+/* Adjust padding for main content area */
+.main-content {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+/* Card styling */
+.dashboard-card {
+    height: 100%;
+    transition: transform 0.2s ease-in-out;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+/* Chart containers */
+.chart-container {
+    position: relative;
+    height: 300px;
+    margin-bottom: 20px;
+}
+
+/* Status indicators */
+.status-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.status-success {
+    background-color: var(--bs-success);
+}
+
+.status-warning {
+    background-color: var(--bs-warning);
+}
+
+.status-danger {
+    background-color: var(--bs-danger);
+}
+
+.status-info {
+    background-color: var(--bs-info);
+}
+
+/* Form sections */
+.form-section {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    border-radius: 0.25rem;
+    background-color: rgba(33, 37, 41, 0.03);
+}
+
+.form-section-title {
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--bs-gray-400);
+}
+
+/* Tax advice and optimization styles */
+.advice-item, .optimization-item {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid var(--bs-info);
+    background-color: rgba(13, 202, 240, 0.1);
+}
+
+.advice-item-title, .optimization-item-title {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.potential-savings {
+    font-weight: bold;
+    color: var(--bs-success);
+}
+
+/* Error messages */
+.error-item {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.25rem;
+}
+
+.error-high {
+    border-left: 4px solid var(--bs-danger);
+    background-color: rgba(220, 53, 69, 0.1);
+}
+
+.error-medium {
+    border-left: 4px solid var(--bs-warning);
+    background-color: rgba(255, 193, 7, 0.1);
+}
+
+.error-low {
+    border-left: 4px solid var(--bs-info);
+    background-color: rgba(13, 202, 240, 0.1);
+}
+
+/* File upload container */
+.upload-container {
+    border: 2px dashed var(--bs-gray-400);
+    border-radius: 0.25rem;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s ease-in-out;
+}
+
+.upload-container:hover {
+    border-color: var(--bs-primary);
+}
+
+.upload-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--bs-gray-600);
+}
+
+/* Document list */
+.document-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.document-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    background-color: rgba(33, 37, 41, 0.03);
+    border-radius: 0.25rem;
+}
+
+.document-icon {
+    margin-right: 1rem;
+    font-size: 1.5rem;
+    color: var(--bs-gray-600);
+}
+
+.document-info {
+    flex-grow: 1;
+}
+
+.document-name {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.document-meta {
+    font-size: 0.875rem;
+    color: var(--bs-gray-600);
+}
+
+/* Compliance status indicators */
+.compliance-status {
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Progress bar customization */
+.progress {
+    height: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Custom utility classes */
+.text-muted-light {
+    color: var(--bs-gray-500);
+}

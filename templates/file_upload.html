@@ -152,19 +152,19 @@
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 W-2 (Wage and Tax Statement)
                                 <span class="badge bg-{{ 'success' if tax_documents and any(doc.document_type == 'W-2' for doc in tax_documents) else 'secondary' }} rounded-pill">
-                                    {{ 'Uploaded' if tax_documents and any(doc.document_type == 'W-2' for doc in tax_documents) else 'Missing' }}
+                                    {{ 'Uploaded' if tax_documents and any([doc.document_type == 'W-2' for doc in tax_documents]) else 'Missing' }}
                                 </span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 1099-MISC (Miscellaneous Income)
-                                <span class="badge bg-{{ 'success' if tax_documents and any(doc.document_type == '1099' for doc in tax_documents) else 'secondary' }} rounded-pill">
-                                    {{ 'Uploaded' if tax_documents and any(doc.document_type == '1099' for doc in tax_documents) else 'Missing' }}
+                                <span class="badge bg-{{ 'success' if tax_documents and any([doc.document_type == '1099' for doc in tax_documents]) else 'secondary' }} rounded-pill">
+                                    {{ 'Uploaded' if tax_documents and any([doc.document_type == '1099' for doc in tax_documents]) else 'Missing' }}
                                 </span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Schedule C (Self-Employment)
-                                <span class="badge bg-{{ 'success' if tax_documents and any(doc.document_type == 'Schedule_C' for doc in tax_documents) else 'secondary' }} rounded-pill">
-                                    {{ 'Uploaded' if tax_documents and any(doc.document_type == 'Schedule_C' for doc in tax_documents) else 'Missing' }}
+                                <span class="badge bg-{{ 'success' if tax_documents and any([doc.document_type == 'Schedule_C' for doc in tax_documents]) else 'secondary' }} rounded-pill">
+                                    {{ 'Uploaded' if tax_documents and any([doc.document_type == 'Schedule_C' for doc in tax_documents]) else 'Missing' }}
                                 </span>
                             </li>
                         </ul>
@@ -175,20 +175,20 @@
                         <ul class="list-group list-group-flush mb-4">
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 1098 (Mortgage Interest)
-                                <span class="badge bg-{{ 'success' if tax_documents and any(doc.document_type == '1098' for doc in tax_documents) else 'secondary' }} rounded-pill">
-                                    {{ 'Uploaded' if tax_documents and any(doc.document_type == '1098' for doc in tax_documents) else 'Missing' }}
+                                <span class="badge bg-{{ 'success' if tax_documents and any([doc.document_type == '1098' for doc in tax_documents]) else 'secondary' }} rounded-pill">
+                                    {{ 'Uploaded' if tax_documents and any([doc.document_type == '1098' for doc in tax_documents]) else 'Missing' }}
                                 </span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Charitable Donation Receipts
-                                <span class="badge bg-{{ 'success' if tax_documents and any('Charitable' in doc.description for doc in tax_documents if doc.description) else 'secondary' }} rounded-pill">
-                                    {{ 'Uploaded' if tax_documents and any('Charitable' in doc.description for doc in tax_documents if doc.description) else 'Missing' }}
+                                <span class="badge bg-{{ 'success' if tax_documents and any(['Charitable' in doc.description for doc in tax_documents if doc.description]) else 'secondary' }} rounded-pill">
+                                    {{ 'Uploaded' if tax_documents and any(['Charitable' in doc.description for doc in tax_documents if doc.description]) else 'Missing' }}
                                 </span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Medical Expense Records
-                                <span class="badge bg-{{ 'success' if tax_documents and any('Medical' in doc.description for doc in tax_documents if doc.description) else 'secondary' }} rounded-pill">
-                                    {{ 'Uploaded' if tax_documents and any('Medical' in doc.description for doc in tax_documents if doc.description) else 'Missing' }}
+                                <span class="badge bg-{{ 'success' if tax_documents and any(['Medical' in doc.description for doc in tax_documents if doc.description]) else 'secondary' }} rounded-pill">
+                                    {{ 'Uploaded' if tax_documents and any(['Medical' in doc.description for doc in tax_documents if doc.description]) else 'Missing' }}
                                 </span>
                             </li>
                         </ul>

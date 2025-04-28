@@ -292,7 +292,14 @@
 async function predictRefund() {
     const form = document.getElementById('refundPredictionForm');
     const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
+    const data = {
+        annual_income: parseFloat(formData.get('annual_income')),
+        investment_80C: parseFloat(formData.get('investment_80C') || '0'),
+        insurance_premium_80D: parseFloat(formData.get('insurance_premium_80D') || '0'),
+        home_loan_interest: parseFloat(formData.get('home_loan_interest') || '0'),
+        education_loan_interest: parseFloat(formData.get('education_loan_interest') || '0'),
+        house_rent_paid: parseFloat(formData.get('house_rent_paid') || '0')
+    };
     
     try {
         const response = await fetch('/predict_refund', {
@@ -309,6 +316,8 @@ async function predictRefund() {
     } catch (error) {
         console.error('Error:', error);
         alert('Error calculating refund. Please try again.');
+    }
+}ain.');
     }
 }
 </script>

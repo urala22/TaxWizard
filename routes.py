@@ -109,6 +109,21 @@ def dashboard():
                           optimizations=optimizations,
                           current_year=current_year)
 
+@app.route('/predict_refund', methods=['POST'])
+@login_required
+def predict_refund():
+    from tax_predictor import predict_refund
+    data = request.get_json()
+    predicted_refund = predict_refund(
+        float(data['annual_income']),
+        float(data['investment_80C']),
+        float(data['insurance_premium_80D']),
+        float(data['home_loan_interest']),
+        float(data['education_loan_interest']),
+        float(data['house_rent_paid'])
+    )
+    return jsonify({'predicted_refund': predicted_refund})
+
 @app.route('/data_collection', methods=['GET', 'POST'])
 @login_required
 def data_collection():

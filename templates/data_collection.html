@@ -225,6 +225,9 @@
     
     <!-- Form Submit Button -->
     <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-5">
+        <button type="button" class="btn btn-info btn-lg me-2" data-bs-toggle="modal" data-bs-target="#predictRefundModal">
+            <i class="fas fa-calculator me-2"></i>Predict Max Refund
+        </button>
         <button type="submit" class="btn btn-primary btn-lg">
             <i class="fas fa-save me-2"></i>Save Tax Information
         </button>
@@ -232,6 +235,81 @@
 </form>
 {% endblock %}
 
+<!-- Tax Refund Prediction Modal -->
+<div class="modal fade" id="predictRefundModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Predict Maximum Tax Refund</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info">
+                    Enter your details to get an AI-powered prediction of your maximum possible tax refund.
+                </div>
+                <form id="refundPredictionForm" class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Annual Income (₹)</label>
+                        <input type="number" class="form-control" name="annual_income" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Investment under 80C (₹)</label>
+                        <input type="number" class="form-control" name="investment_80C" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Insurance Premium 80D (₹)</label>
+                        <input type="number" class="form-control" name="insurance_premium_80D" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Home Loan Interest (₹)</label>
+                        <input type="number" class="form-control" name="home_loan_interest" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Education Loan Interest (₹)</label>
+                        <input type="number" class="form-control" name="education_loan_interest" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">House Rent Paid (₹)</label>
+                        <input type="number" class="form-control" name="house_rent_paid" required>
+                    </div>
+                </form>
+                <div id="predictionResult" class="mt-4 text-center" style="display: none;">
+                    <h4>Estimated Maximum Tax Refund</h4>
+                    <h2 class="text-success">₹<span id="refundAmount">0</span></h2>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="predictRefund()">Calculate Refund</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/form_validation.js') }}"></script>
+<script>
+async function predictRefund() {
+    const form = document.getElementById('refundPredictionForm');
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    
+    try {
+        const response = await fetch('/predict_refund', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        document.getElementById('refundAmount').textContent = result.predicted_refund.toLocaleString();
+        document.getElementById('predictionResult').style.display = 'block';
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error calculating refund. Please try again.');
+    }
+}
+</script>
 {% endblock %}

@@ -52,3 +52,7 @@ with app.app_context():
     import models  # noqa: F401
 
     db.create_all()
+    
+    # Run migrations to add any missing columns
+    from migrations import run_migrations
+    run_migrations()

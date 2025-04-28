@@ -271,9 +271,14 @@ def file_upload():
                     if tax_data:
                         session['extracted_tax_data'] = tax_data
                         flash(f'Tax data extracted successfully from {document_type}', 'success')
+                    else:
+                        flash('No data could be extracted from the document. Please check the file format and quality.', 'warning')
                     return redirect(url_for('data_collection'))
                 except Exception as e:
-                    logging.error(f"Error processing Form 16: {str(e)}")
+                    error_msg = str(e)
+                    logging.error(f"Error processing document: {error_msg}")
+                    flash(f'Error processing document: {error_msg}', 'danger')
+                    return redirect(url_for('file_upload'))
             
             flash('File uploaded successfully', 'success')
             return redirect(url_for('dashboard'))

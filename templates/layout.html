@@ -25,7 +25,7 @@
         <div class="container">
             <a class="navbar-brand" href="{{ url_for('index') }}">
                 <i class="fas fa-file-invoice-dollar me-2"></i>
-                Tax Filing Assistant
+                TaxWizard
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -107,34 +107,22 @@
     <footer class="bg-dark text-light py-4 mt-5">
         <div class="container">
             <div class="row">
-                <div class="col-md-6">
-                    <h5>Automated Tax Filing Assistant</h5>
-                    <p>Simplifying tax filing with AI and RPA technology.</p>
-                </div>
-                <div class="col-md-3">
-                    <h5>Quick Links</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="{{ url_for('index') }}" class="text-light">Home</a></li>
+                <div class="col-12">
+                    <div class="footer-quick-links d-flex justify-content-evenly align-items-center" style="gap: 0;">
+                        <a href="{{ url_for('index') }}" class="text-light">Home</a>
                         {% if current_user.is_authenticated %}
-                        <li><a href="{{ url_for('dashboard') }}" class="text-light">Dashboard</a></li>
-                        <li><a href="{{ url_for('tax_advice') }}" class="text-light">Tax Advice</a></li>
+                        <a href="{{ url_for('dashboard') }}" class="text-light">Dashboard</a>
+                        <a href="{{ url_for('tax_advice') }}" class="text-light">Tax Advice</a>
                         {% else %}
-                        <li><a href="{{ url_for('login') }}" class="text-light">Login</a></li>
-                        <li><a href="{{ url_for('register') }}" class="text-light">Register</a></li>
+                        <a href="{{ url_for('login') }}" class="text-light">Login</a>
+                        <a href="{{ url_for('register') }}" class="text-light">Register</a>
                         {% endif %}
-                    </ul>
-                </div>
-                <div class="col-md-3">
-                    <h5>Contact</h5>
-                    <address>
-                        <i class="fas fa-envelope me-2"></i> support@taxassistant.com<br>
-                        <i class="fas fa-phone me-2"></i> (123) 456-7890
-                    </address>
+                    </div>
                 </div>
             </div>
             <hr>
             <div class="text-center">
-                <p>&copy; {{ now.year }} Tax Filing Assistant. All rights reserved.</p>
+                <p>&copy; {{ now.year }} TaxWizard. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -147,5 +135,24 @@
     <script src="{{ url_for('static', filename='js/form_validation.js') }}"></script>
     <!-- Additional scripts -->
     {% block scripts %}{% endblock %}
+    <!-- Scroll to Top Button -->
+    <button id="scrollToTopBtn" title="Go to top" style="display:none;position:fixed;bottom:40px;right:40px;z-index:9999;background:#6366f1;color:#fff;border:none;border-radius:50%;width:44px;height:44px;box-shadow:0 2px 8px rgba(99,102,241,0.2);font-size:1.5rem;cursor:pointer;transition:background 0.2s;">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    <script>
+    // Scroll to Top Button Logic
+    const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 200) {
+            scrollToTopBtn.style.display = 'block';
+        } else {
+            scrollToTopBtn.style.display = 'none';
+        }
+    });
+    // Custom slow smooth scroll
+    scrollToTopBtn.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    </script>
 </body>
 </html>

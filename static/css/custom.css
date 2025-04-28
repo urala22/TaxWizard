@@ -85,6 +85,31 @@
   transform: rotate(180deg);
 }
 
+/* Theme toggle button sun/moon animations */
+.theme-toggle.sun-animate i.fa-sun {
+  animation: sunSpinScale 0.7s cubic-bezier(0.68,-0.55,0.27,1.55);
+}
+.theme-toggle.sun-glow i.fa-sun {
+  box-shadow: 0 0 16px 4px #ffd700, 0 0 32px 8px #ffe066;
+  color: #ffd700 !important;
+  animation: sunGlowPulse 1.5s infinite alternate;
+}
+@keyframes sunSpinScale {
+  0% { transform: scale(0.7) rotate(-180deg); opacity: 0.5; }
+  60% { transform: scale(1.2) rotate(20deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+@keyframes sunGlowPulse {
+  0% { box-shadow: 0 0 8px 2px #ffd700, 0 0 16px 4px #ffe066; }
+  100% { box-shadow: 0 0 24px 8px #ffd700, 0 0 40px 16px #ffe066; }
+}
+.theme-toggle i.fa-moon {
+  transition: transform 0.5s;
+}
+.theme-toggle.moon-animate i.fa-moon {
+  transform: rotate(-180deg) scale(1.2);
+}
+
 /* Base styles */
 body {
   background-color: var(--bg-color);
@@ -1350,4 +1375,143 @@ footer a:hover {
 .dashboard-section-header,
 .dashboard-section-subtitle {
   color: var(--text-color) !important;
+}
+
+/* --- Navbar and Button Visibility Improvements --- */
+[data-bs-theme="light"] .navbar {
+  background: #fff !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+[data-bs-theme="light"] .navbar-brand,
+[data-bs-theme="light"] .navbar-nav .nav-link {
+  color: #1a237e !important;
+  font-weight: 700;
+  text-shadow: none;
+}
+[data-bs-theme="light"] .navbar-nav .nav-link:hover,
+[data-bs-theme="light"] .navbar-nav .nav-link.active {
+  color: #fff !important;
+  background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%) !important;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(99,102,241,0.08);
+}
+[data-bs-theme="light"] .navbar-nav .nav-link[href*="login"],
+[data-bs-theme="light"] .navbar-nav .nav-link[href*="register"] {
+  color: #1a237e !important;
+  border: 1.5px solid #6366f1;
+  background: #fff;
+  font-weight: 600;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+}
+[data-bs-theme="light"] .navbar-nav .nav-link[href*="login"]:hover,
+[data-bs-theme="light"] .navbar-nav .nav-link[href*="register"]:hover {
+  background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%) !important;
+  color: #fff !important;
+  border: 1.5px solid #6366f1;
+  box-shadow: 0 2px 8px rgba(99,102,241,0.12);
+}
+[data-bs-theme="light"] .navbar-nav .nav-link[href*="login"].active,
+[data-bs-theme="light"] .navbar-nav .nav-link[href*="register"].active {
+  background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%) !important;
+  color: #fff !important;
+  border: 1.5px solid #6366f1;
+}
+[data-bs-theme="light"] .navbar-toggler {
+  border-color: #6366f1;
+}
+[data-bs-theme="light"] .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(99,102,241,1)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* Make sure brand is always bold and visible */
+.navbar-brand {
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+/* Dashboard card grid: 2 cards per row on desktop, 1 per row on mobile */
+.dashboard-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  margin-top: 2rem;
+}
+@media (max-width: 767.98px) {
+  .dashboard-card-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
+/* Ensure cards stretch to fill grid cells */
+.dashboard-card-grid .dashboard-card {
+  height: 100%;
+}
+
+/* Fix for 'Why Choose Our Tax Assistant?' section to support dark mode */
+.bg-light {
+  background-color: var(--card-bg) !important;
+  color: var(--text-color) !important;
+}
+
+.bg-light .card {
+  background-color: var(--card-bg) !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--card-border) !important;
+}
+
+.bg-light .card-title,
+.bg-light .card-body,
+.bg-light .list-group-item {
+  color: var(--text-color) !important;
+  background: var(--card-bg) !important;
+}
+
+.bg-light .list-group-item {
+  border-color: var(--card-border) !important;
+}
+
+.bg-light .fa-check-circle {
+  color: #10B981 !important;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.footer-quick-links {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 0;
+  padding: 0.5rem 0;
+}
+.footer-quick-links a {
+  color: var(--text-color);
+  font-weight: 500;
+  text-decoration: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
+  transition: background 0.2s, color 0.2s;
+}
+.footer-quick-links a:hover {
+  background: var(--primary-gradient);
+  color: #fff;
+}
+@media (max-width: 600px) {
+  .footer-quick-links {
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.5rem 0;
+  }
+  .footer-quick-links a {
+    width: 100%;
+    text-align: center;
+    padding: 0.5rem 0;
+  }
 }

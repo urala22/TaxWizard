@@ -53,7 +53,7 @@ function renderTaxDistributionChart() {
                             const value = context.raw || 0;
                             const total = context.dataset.data.reduce((a, b) => a + b, 0);
                             const percentage = Math.round((value / total) * 100);
-                            return `${label}: $${value.toLocaleString()} (${percentage}%)`;
+                            return `${label}: ₹${value.toLocaleString()} (${percentage}%)`;
                         }
                     }
                 }
@@ -159,7 +159,7 @@ function renderSavingsComparisonChart() {
                     beginAtZero: true,
                     ticks: {
                         callback: function(value) {
-                            return '$' + value.toLocaleString();
+                            return '₹' + value.toLocaleString();
                         }
                     }
                 }

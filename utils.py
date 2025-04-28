@@ -105,7 +105,7 @@ def validate_tax_data(tax_data):
     return errors
 
 def format_currency(amount):
-    """Format a number as currency"""
+    """Format a number as Indian Rupees"""
     if amount is None:
-        return "$0.00"
-    return "${:,.2f}".format(amount)
+        return "₹0.00"
+    return "₹{:,.2f}".format(amount)

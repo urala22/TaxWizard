@@ -23,14 +23,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function renderTaxDataChart() {
     const ctx = document.getElementById('taxDataChart').getContext('2d');
-    
+
     // Get data from data attributes
     const chartElement = document.getElementById('taxDataChart');
     const income = parseFloat(chartElement.dataset.income || 0);
     const deductions = parseFloat(chartElement.dataset.deductions || 0);
     const taxableIncome = parseFloat(chartElement.dataset.taxableIncome || 0);
     const taxLiability = parseFloat(chartElement.dataset.taxLiability || 0);
-    
+
     const taxDataChart = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -61,7 +61,7 @@ function renderTaxDataChart() {
                     beginAtZero: true,
                     ticks: {
                         callback: function(value) {
-                            return '$' + value.toLocaleString();
+                            return '₹' + value.toLocaleString();
                         }
                     }
                 }
@@ -70,7 +70,7 @@ function renderTaxDataChart() {
                 tooltip: {
                     callbacks: {
                         label: function(context) {
-                            return '$' + context.raw.toLocaleString();
+                            return '₹' + context.raw.toLocaleString();
                         }
                     }
                 }
@@ -81,13 +81,13 @@ function renderTaxDataChart() {
 
 function renderErrorDistributionChart() {
     const ctx = document.getElementById('errorDistributionChart').getContext('2d');
-    
+
     // Get data from data attributes
     const chartElement = document.getElementById('errorDistributionChart');
     const highErrors = parseInt(chartElement.dataset.highErrors || 0);
     const mediumErrors = parseInt(chartElement.dataset.mediumErrors || 0);
     const lowErrors = parseInt(chartElement.dataset.lowErrors || 0);
-    
+
     const errorDistributionChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
@@ -121,12 +121,12 @@ function renderErrorDistributionChart() {
 
 function renderOptimizationChart() {
     const ctx = document.getElementById('optimizationChart').getContext('2d');
-    
+
     // Get data from the page
     const optimizationItems = document.querySelectorAll('.optimization-item');
     const labels = [];
     const savings = [];
-    
+
     optimizationItems.forEach(item => {
         labels.push(item.querySelector('.strategy-name').textContent);
         // Extract the number from "$X,XXX.XX" format
@@ -134,13 +134,13 @@ function renderOptimizationChart() {
         const savingsAmount = parseFloat(savingsText.replace(/[^0-9.-]+/g, ''));
         savings.push(savingsAmount);
     });
-    
+
     const optimizationChart = new Chart(ctx, {
         type: 'horizontalBar',
         data: {
             labels: labels,
             datasets: [{
-                label: 'Potential Savings ($)',
+                label: 'Potential Savings (₹)',
                 data: savings,
                 backgroundColor: 'rgba(75, 192, 192, 0.6)',
                 borderColor: 'rgba(75, 192, 192, 1)',
@@ -156,7 +156,7 @@ function renderOptimizationChart() {
                     beginAtZero: true,
                     ticks: {
                         callback: function(value) {
-                            return '$' + value.toLocaleString();
+                            return '₹' + value.toLocaleString();
                         }
                     }
                 }
@@ -165,7 +165,7 @@ function renderOptimizationChart() {
                 tooltip: {
                     callbacks: {
                         label: function(context) {
-                            return '$' + context.raw.toLocaleString();
+                            return '₹' + context.raw.toLocaleString();
                         }
                     }
                 }

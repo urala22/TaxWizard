@@ -157,14 +157,14 @@
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Form 16A (Other Income)
-                                <span class="badge bg-{{ 'success' if tax_documents and any([doc.document_type == 'Form16A' for doc in tax_documents]) else 'secondary' }} rounded-pill">
-                                    {{ 'Uploaded' if tax_documents and any([doc.document_type == 'Form16A' for doc in tax_documents]) else 'Missing' }}
+                                <span class="badge bg-{{ 'success' if tax_documents and tax_documents|selectattr('document_type', 'equalto', 'Form16A')|list|length else 'secondary' }} rounded-pill">
+                                    {{ 'Uploaded' if tax_documents and tax_documents|selectattr('document_type', 'equalto', 'Form16A')|list|length else 'Missing' }}
                                 </span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Schedule C (Self-Employment)
-                                <span class="badge bg-{{ 'success' if tax_documents and any([doc.document_type == 'Schedule_C' for doc in tax_documents]) else 'secondary' }} rounded-pill">
-                                    {{ 'Uploaded' if tax_documents and any([doc.document_type == 'Schedule_C' for doc in tax_documents]) else 'Missing' }}
+                                <span class="badge bg-{{ 'success' if tax_documents and tax_documents|selectattr('document_type', 'equalto', 'Schedule_C')|list|length else 'secondary' }} rounded-pill">
+                                    {{ 'Uploaded' if tax_documents and tax_documents|selectattr('document_type', 'equalto', 'Schedule_C')|list|length else 'Missing' }}
                                 </span>
                             </li>
                         </ul>

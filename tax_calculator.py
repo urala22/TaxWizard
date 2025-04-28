@@ -68,7 +68,13 @@ def calculate_tax_liability(tax_data):
         'sec_80c_deductions': sec_80c_deductions,
         'health_insurance_deduction': health_insurance_deduction,
         'home_loan_deduction': home_loan_deduction,
-        'total_deductions': total_deductions
+        'total_deductions': total_deductions,
+        # Add missing fields expected by the template
+        'agi': income,  # Adjusted gross income
+        'deduction_used': 'Itemized' if total_deductions > 12950 else 'Standard',  # Example standard deduction for Single filer
+        'standard_deduction': 12950,  # Standard deduction amount (for single filer)
+        'itemized_deductions': total_deductions,
+        'dependent_credit': tax_data.dependents * 2000  # $2000 per dependent
     }
 
 def get_tax_optimization_strategies(tax_data):

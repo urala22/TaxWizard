@@ -3,177 +3,121 @@ from datetime import datetime
 
 def calculate_tax_liability(tax_data):
     """
-    Calculate the estimated tax liability based on the provided tax data
+    Calculate the estimated tax liability based on Indian tax regulations
     """
-    # Define basic tax brackets for 2023 (simplified for demonstration)
-    # These would normally be more complex and based on filing status
-    brackets = {
-        'single': [
-            (0, 11000, 0.10),
-            (11001, 44725, 0.12),
-            (44726, 95375, 0.22),
-            (95376, 182100, 0.24),
-            (182101, 231250, 0.32),
-            (231251, 578125, 0.35),
-            (578126, float('inf'), 0.37)
-        ],
-        'married': [
-            (0, 22000, 0.10),
-            (22001, 89450, 0.12),
-            (89451, 190750, 0.22),
-            (190751, 364200, 0.24),
-            (364201, 462500, 0.32),
-            (462501, 693750, 0.35),
-            (693751, float('inf'), 0.37)
-        ],
-        'head_of_household': [
-            (0, 15700, 0.10),
-            (15701, 59850, 0.12),
-            (59851, 95350, 0.22),
-            (95351, 182100, 0.24),
-            (182101, 231250, 0.32),
-            (231251, 578100, 0.35),
-            (578101, float('inf'), 0.37)
-        ]
-    }
-    
-    # Map the filing status from tax_data to the brackets
-    filing_status_map = {
-        'single': 'single',
-        'married_joint': 'married',
-        'married_separate': 'single',  # Simplified - would be different in reality
-        'head_of_household': 'head_of_household'
-    }
-    
-    status = filing_status_map.get(tax_data.filing_status, 'single')
-    
-    # Calculate adjusted gross income (AGI)
-    agi = tax_data.income
-    
-    # Subtract retirement contributions (simplified)
-    agi -= tax_data.retirement_contributions
-    
-    # For self-employed, subtract business expenses from business income
+    # Define Indian tax slabs for FY 2023-24 (New Tax Regime)
+    slabs = [
+        (0, 300000, 0),
+        (300001, 600000, 0.05),
+        (600001, 900000, 0.10),
+        (900001, 1200000, 0.15),
+        (1200001, 1500000, 0.20),
+        (1500001, float('inf'), 0.30)
+    ]
+
+    # Calculate gross total income
+    income = tax_data.income
+
+    # Add business income if self-employed
     if tax_data.self_employed:
         business_profit = max(0, tax_data.business_income - tax_data.business_expenses)
-        agi += business_profit
-    
-    # Add rental income (simplified)
+        income += business_profit
+
+    # Add rental income
     rental_profit = max(0, tax_data.rental_income - tax_data.rental_expenses)
-    agi += rental_profit
-    
-    # Add capital gains (simplified - would normally have different rates)
-    agi += tax_data.capital_gains
-    
-    # Calculate standard deduction (2023 values, simplified)
-    standard_deduction = {
-        'single': 13850,
-        'married': 27700,
-        'head_of_household': 20800
-    }.get(status, 13850)
-    
-    # Calculate itemized deductions
-    itemized_deductions = (
-        tax_data.mortgage_interest +
-        tax_data.property_tax +
-        tax_data.charitable_contributions +
-        max(0, tax_data.medical_expenses - 0.075 * agi)  # Medical expenses over 7.5% of AGI
+    income += rental_profit
+
+    # Add capital gains (simplified)
+    income += tax_data.capital_gains
+
+    # Calculate deductions under Section 80C
+    sec_80c_deductions = min(150000, (
+        tax_data.retirement_contributions +  # PPF, EPF, etc.
+        tax_data.charitable_contributions    # Eligible donations
+    ))
+
+    # Health Insurance Premium deduction under Section 80D
+    health_insurance_deduction = min(25000, tax_data.medical_expenses)
+
+    # Home loan interest deduction under Section 24
+    home_loan_deduction = min(200000, tax_data.mortgage_interest)
+
+    # Total deductions
+    total_deductions = (
+        sec_80c_deductions +
+        health_insurance_deduction +
+        home_loan_deduction
     )
-    
-    # Use the higher of standard or itemized deductions
-    deduction = max(standard_deduction, itemized_deductions)
-    
+
     # Calculate taxable income
-    taxable_income = max(0, agi - deduction)
-    
-    # Calculate tax based on brackets
+    taxable_income = max(0, income - total_deductions)
+
+    # Calculate tax based on slabs
     tax = 0
-    for lower, upper, rate in brackets[status]:
+    for lower, upper, rate in slabs:
         if taxable_income > lower:
             tax += min(upper - lower, taxable_income - lower) * rate
-        if taxable_income <= upper:
-            break
-    
-    # Calculate dependent credit (simplified)
-    dependent_credit = tax_data.dependents * 2000  # $2,000 per dependent in 2023
-    
-    # Subtract credits
-    tax = max(0, tax - dependent_credit)
-    
+
+    # Add health and education cess (4%)
+    tax = tax + (tax * 0.04)
+
     return {
-        'agi': agi,
+        'gross_income': income,
         'taxable_income': taxable_income,
         'tax_liability': tax,
-        'standard_deduction': standard_deduction,
-        'itemized_deductions': itemized_deductions,
-        'deduction_used': 'Itemized' if itemized_deductions > standard_deduction else 'Standard',
-        'dependent_credit': dependent_credit
+        'sec_80c_deductions': sec_80c_deductions,
+        'health_insurance_deduction': health_insurance_deduction,
+        'home_loan_deduction': home_loan_deduction,
+        'total_deductions': total_deductions
     }
 
 def get_tax_optimization_strategies(tax_data):
     """
-    Generate tax optimization strategies based on the user's tax data
+    Generate tax optimization strategies based on Indian tax regulations
     """
     strategies = []
     tax_calc = calculate_tax_liability(tax_data)
-    
-    # Check if user is using standard deduction but could benefit from itemizing
-    if tax_calc['deduction_used'] == 'Standard' and tax_calc['itemized_deductions'] > 0.7 * tax_calc['standard_deduction']:
-        strategies.append({
-            'strategy': 'Increase Itemized Deductions',
-            'description': 'Your itemized deductions are close to the standard deduction threshold. Consider increasing charitable contributions or bunching deductions to exceed the standard deduction amount.',
-            'potential_savings': (tax_calc['standard_deduction'] - tax_calc['itemized_deductions']) * 0.22  # Approximate tax rate
-        })
-    
-    # Retirement contribution strategy
-    max_contribution = 22500  # 2023 401(k) limit
-    if tax_data.retirement_contributions < max_contribution:
-        potential_contribution = min(max_contribution - tax_data.retirement_contributions, 
-                                  tax_calc['taxable_income'] * 0.1)  # Suggest 10% of taxable income
-        if potential_contribution > 1000:
+
+    # Section 80C optimization
+    max_80c = 150000
+    current_80c = tax_calc['sec_80c_deductions']
+    if current_80c < max_80c:
+        potential_saving = min(max_80c - current_80c, tax_data.income * 0.1)
+        if potential_saving > 10000:
             strategies.append({
-                'strategy': 'Increase Retirement Contributions',
-                'description': f'Consider contributing up to ${int(potential_contribution)} more to your retirement accounts to reduce taxable income.',
-                'potential_savings': potential_contribution * 0.22  # Approximate tax rate
+                'strategy': 'Maximize Section 80C Investments',
+                'description': f'Consider investing up to ₹{int(potential_saving)} more in PPF, ELSS funds, or EPF to maximize your Section 80C deductions.',
+                'potential_savings': potential_saving * 0.30  # Maximum tax rate
             })
-    
-    # Self-employed tax strategies
-    if tax_data.self_employed:
-        # Home office deduction
+
+    # Health Insurance Premium (Section 80D)
+    if tax_data.medical_expenses < 25000:
         strategies.append({
-            'strategy': 'Home Office Deduction',
-            'description': 'If you work from home, consider taking the home office deduction to reduce your self-employment tax.',
-            'potential_savings': tax_data.business_income * 0.02  # Rough estimate
+            'strategy': 'Health Insurance Benefits',
+            'description': 'Consider getting a health insurance policy for yourself and family to claim deductions under Section 80D up to ₹25,000.',
+            'potential_savings': (25000 - tax_data.medical_expenses) * 0.30
         })
-        
-        # SEP IRA or Solo 401(k)
+
+    # Home Loan Interest
+    if tax_data.mortgage_interest > 0 and tax_data.mortgage_interest < 200000:
         strategies.append({
-            'strategy': 'SEP IRA or Solo 401(k)',
-            'description': 'As a self-employed individual, you can set up a SEP IRA or Solo 401(k) to save more for retirement and reduce taxes.',
-            'potential_savings': tax_data.business_income * 0.05  # Rough estimate
+            'strategy': 'Home Loan Interest Benefits',
+            'description': 'You can claim up to ₹2,00,000 as deduction on home loan interest under Section 24.',
+            'potential_savings': (200000 - tax_data.mortgage_interest) * 0.30
         })
-    
-    # Dependent care FSA
-    if tax_data.dependents > 0:
-        strategies.append({
-            'strategy': 'Dependent Care FSA',
-            'description': 'If you have dependents requiring care, consider a Dependent Care FSA to pay for expenses with pre-tax dollars.',
-            'potential_savings': 5000 * 0.22  # Maximum FSA contribution * approximate tax rate
-        })
-    
-    # HSA contributions
+
+    # NPS Investment
     strategies.append({
-        'strategy': 'Health Savings Account (HSA)',
-        'description': 'If eligible, maximize HSA contributions to pay for medical expenses with pre-tax dollars.',
-        'potential_savings': 3650 * 0.22  # 2023 individual HSA limit * approximate tax rate
+        'strategy': 'National Pension System (NPS)',
+        'description': 'Consider investing in NPS to get additional deduction of up to ₹50,000 under Section 80CCD(1B).',
+        'potential_savings': 50000 * 0.30
     })
-    
-    # Capital loss harvesting if capital gains exist
-    if tax_data.capital_gains > 0:
-        strategies.append({
-            'strategy': 'Tax-Loss Harvesting',
-            'description': 'Consider selling investments at a loss to offset capital gains taxes.',
-            'potential_savings': tax_data.capital_gains * 0.05  # Rough estimate
-        })
-    
+
+    # Electric Vehicle Loan Interest
+    strategies.append({
+        'strategy': 'Electric Vehicle Loan',
+        'description': 'If planning to buy an electric vehicle, loan interest up to ₹1,50,000 is deductible under Section 80EEB.',
+        'potential_savings': 150000 * 0.30
+    })
+
     return strategies

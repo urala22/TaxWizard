@@ -149,19 +149,19 @@
                     <h6 class="mb-3">Standard vs. Itemized Deduction</h6>
                     <div class="d-flex justify-content-between mb-2">
                         <span>Standard Deduction:</span>
-                        <span class="fw-bold">${{ tax_liability.standard_deduction|round(2) }}</span>
+                        <span class="fw-bold">₹{{ tax_liability.standard_deduction|round(2) }}</span>
                     </div>
                     <div class="d-flex justify-content-between mb-2">
                         <span>Your Itemized Deductions:</span>
-                        <span class="fw-bold">${{ tax_liability.itemized_deductions|round(2) }}</span>
+                        <span class="fw-bold">₹{{ tax_liability.itemized_deductions|round(2) }}</span>
                     </div>
                     
                     <div class="alert alert-{{ 'success' if tax_liability.itemized_deductions > tax_liability.standard_deduction else 'warning' }} mt-3">
                         <i class="fas fa-info-circle me-2"></i>
                         {% if tax_liability.itemized_deductions > tax_liability.standard_deduction %}
-                            Itemizing your deductions could save you ${{ (tax_liability.itemized_deductions - tax_liability.standard_deduction)|round(2) }}
+                            Itemizing your deductions could save you ₹{{ (tax_liability.itemized_deductions - tax_liability.standard_deduction)|round(2) }}
                         {% else %}
-                            Taking the standard deduction saves you ${{ (tax_liability.standard_deduction - tax_liability.itemized_deductions)|round(2) }}
+                            Taking the standard deduction saves you ₹{{ (tax_liability.standard_deduction - tax_liability.itemized_deductions)|round(2) }}
                         {% endif %}
                     </div>
                 </div>

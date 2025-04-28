@@ -31,30 +31,30 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <div class="navbar-nav-grid">
+                <ul class="navbar-nav me-auto">
                     {% if current_user.is_authenticated %}
-                    <div class="nav-item">
+                    <li class="nav-item">
                         <a class="nav-link {% if request.path == url_for('dashboard') %}active{% endif %}" href="{{ url_for('dashboard') }}">
                             <i class="fas fa-tachometer-alt me-1"></i> Dashboard
                         </a>
-                    </div>
-                    <div class="nav-item">
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {% if request.path == url_for('data_collection') %}active{% endif %}" href="{{ url_for('data_collection') }}">
                             <i class="fas fa-database me-1"></i> Data Collection
                         </a>
-                    </div>
-                    <div class="nav-item">
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {% if request.path == url_for('tax_advice') %}active{% endif %}" href="{{ url_for('tax_advice') }}">
                             <i class="fas fa-lightbulb me-1"></i> Tax Advice
                         </a>
-                    </div>
-                    <div class="nav-item">
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {% if request.path == url_for('tax_optimization') %}active{% endif %}" href="{{ url_for('tax_optimization') }}">
                             <i class="fas fa-chart-line me-1"></i> Tax Optimization
                         </a>
-                    </div>
+                    </li>
                     {% endif %}
-                </div>
+                </ul>
                 <ul class="navbar-nav ms-auto">
                     {% if current_user.is_authenticated %}
                     <li class="nav-item dropdown">

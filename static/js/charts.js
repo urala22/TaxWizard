@@ -144,7 +144,7 @@ function renderSavingsComparisonChart() {
         data: {
             labels: labels,
             datasets: [{
-                label: 'Amount ($)',
+                label: 'Amount (₹)',
                 data: data,
                 backgroundColor: backgroundColors,
                 borderColor: borderColors,
@@ -168,7 +168,7 @@ function renderSavingsComparisonChart() {
                 tooltip: {
                     callbacks: {
                         label: function(context) {
-                            return '$' + context.raw.toLocaleString();
+                            return '₹' + context.raw.toLocaleString();
                         }
                     }
                 }

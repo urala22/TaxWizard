@@ -30,23 +30,31 @@ def calculate_tax_liability(tax_data):
     # Add capital gains (simplified)
     income += tax_data.capital_gains
 
-    # Calculate deductions under Section 80C
+    # Calculate deductions under Section 80C (limit of ₹1.5 lakh)
     sec_80c_deductions = min(150000, (
-        tax_data.retirement_contributions +  # PPF, EPF, etc.
-        tax_data.charitable_contributions    # Eligible donations
+        tax_data.retirement_contributions +  # PPF, EPF, NPS, etc.
+        tax_data.life_insurance             # Life insurance premiums
     ))
 
-    # Health Insurance Premium deduction under Section 80D
+    # Health Insurance Premium deduction under Section 80D (limit of ₹25,000)
     health_insurance_deduction = min(25000, tax_data.medical_expenses)
 
-    # Home loan interest deduction under Section 24
+    # Home loan interest deduction under Section 24 (limit of ₹2 lakh for self-occupied property)
     home_loan_deduction = min(200000, tax_data.mortgage_interest)
+    
+    # Education loan interest deduction under Section 80E (no maximum limit)
+    education_loan_deduction = tax_data.education_loan
+    
+    # Charitable donations deduction under Section 80G (assuming 50% deduction for simplicity)
+    charitable_deduction = tax_data.charitable_contributions * 0.5
 
     # Total deductions
     total_deductions = (
         sec_80c_deductions +
         health_insurance_deduction +
-        home_loan_deduction
+        home_loan_deduction +
+        education_loan_deduction +
+        charitable_deduction
     )
 
     # Calculate taxable income
@@ -68,7 +76,15 @@ def calculate_tax_liability(tax_data):
         'sec_80c_deductions': sec_80c_deductions,
         'health_insurance_deduction': health_insurance_deduction,
         'home_loan_deduction': home_loan_deduction,
-        'total_deductions': total_deductions
+        'education_loan_deduction': education_loan_deduction,
+        'charitable_deduction': charitable_deduction,
+        'total_deductions': total_deductions,
+        # Keep these fields for template compatibility but with Indian values
+        'agi': income,  # Total income before deductions
+        'deduction_used': 'Itemized',  # In Indian tax system there's no standard deduction concept like US
+        'standard_deduction': 50000,  # For salaried employees, there is a standard deduction of ₹50,000
+        'itemized_deductions': total_deductions,
+        'dependent_credit': tax_data.dependents * 4000  # ₹4000 per dependent (example value)
     }
 
 def get_tax_optimization_strategies(tax_data):
@@ -86,9 +102,17 @@ def get_tax_optimization_strategies(tax_data):
         if potential_saving > 10000:
             strategies.append({
                 'strategy': 'Maximize Section 80C Investments',
-                'description': f'Consider investing up to ₹{int(potential_saving)} more in PPF, ELSS funds, or EPF to maximize your Section 80C deductions.',
+                'description': f'Consider investing up to ₹{int(potential_saving):,} more in PPF, ELSS funds, or EPF to maximize your Section 80C deductions (up to ₹1.5 lakh limit).',
                 'potential_savings': potential_saving * 0.30  # Maximum tax rate
             })
+    
+    # Life Insurance Premium (part of 80C)
+    if tax_data.life_insurance < 25000 and current_80c < max_80c:
+        strategies.append({
+            'strategy': 'Life Insurance Premium',
+            'description': 'Consider getting a life insurance policy to protect your family and claim tax benefits under Section 80C.',
+            'potential_savings': min(25000, max_80c - current_80c) * 0.30
+        })
 
     # Health Insurance Premium (Section 80D)
     if tax_data.medical_expenses < 25000:

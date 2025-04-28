@@ -3,6 +3,38 @@ import re
 
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'csv', 'xls', 'xlsx'}
 
+def extract_form16_data(file_path):
+    """Extract tax data from Form 16"""
+    # This is a basic implementation - you may want to use OCR or PDF parsing libraries
+    # for more sophisticated extraction
+    try:
+        import PyPDF2
+        tax_data = {}
+        
+        with open(file_path, 'rb') as file:
+            reader = PyPDF2.PdfReader(file)
+            text = ""
+            for page in reader.pages:
+                text += page.extract_text()
+            
+            # Basic extraction - you'll need to adjust patterns based on your Form 16 format
+            income_pattern = r"Gross Total Income.*?₹\s*([\d,]+)"
+            tax_pattern = r"Total Tax Payable.*?₹\s*([\d,]+)"
+            
+            import re
+            income_match = re.search(income_pattern, text)
+            if income_match:
+                tax_data['income'] = float(income_match.group(1).replace(',', ''))
+            
+            tax_match = re.search(tax_pattern, text)
+            if tax_match:
+                tax_data['tax_payable'] = float(tax_match.group(1).replace(',', ''))
+                
+        return tax_data
+    except Exception as e:
+        logging.error(f"Error extracting Form 16 data: {str(e)}")
+        return None
+
 def allowed_file(filename):
     """Check if the uploaded file has an allowed extension"""
     return '.' in filename and \

@@ -32,6 +32,8 @@ class TaxData(db.Model):
     medical_expenses = db.Column(db.Float, default=0)
     charitable_contributions = db.Column(db.Float, default=0)
     retirement_contributions = db.Column(db.Float, default=0)
+    life_insurance = db.Column(db.Float, default=0)
+    education_loan = db.Column(db.Float, default=0)
     self_employed = db.Column(db.Boolean, default=False)
     business_income = db.Column(db.Float, default=0)
     business_expenses = db.Column(db.Float, default=0)

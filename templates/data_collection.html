@@ -33,10 +33,11 @@
                     <label for="filing_status" class="form-label">Filing Status</label>
                     <select class="form-select" id="filing_status" name="filing_status" required>
                         <option value="" disabled {% if not tax_data %}selected{% endif %}>Select your filing status</option>
-                        <option value="single" {% if tax_data and tax_data.filing_status == 'single' %}selected{% endif %}>Single</option>
-                        <option value="married_joint" {% if tax_data and tax_data.filing_status == 'married_joint' %}selected{% endif %}>Married Filing Jointly</option>
-                        <option value="married_separate" {% if tax_data and tax_data.filing_status == 'married_separate' %}selected{% endif %}>Married Filing Separately</option>
-                        <option value="head_of_household" {% if tax_data and tax_data.filing_status == 'head_of_household' %}selected{% endif %}>Head of Household</option>
+                        <option value="individual" {% if tax_data and tax_data.filing_status == 'individual' %}selected{% endif %}>Individual</option>
+                        <option value="huf" {% if tax_data and tax_data.filing_status == 'huf' %}selected{% endif %}>Hindu Undivided Family (HUF)</option>
+                        <option value="partnership" {% if tax_data and tax_data.filing_status == 'partnership' %}selected{% endif %}>Partnership Firm</option>
+                        <option value="company" {% if tax_data and tax_data.filing_status == 'company' %}selected{% endif %}>Company</option>
+                        <option value="nri" {% if tax_data and tax_data.filing_status == 'nri' %}selected{% endif %}>Non-Resident Indian (NRI)</option>
                     </select>
                     <div class="invalid-feedback">
                         Please select your filing status.
@@ -104,9 +105,29 @@
                 </div>
                 
                 <div class="col-md-6">
-                    <label for="retirement_contributions" class="form-label">Retirement Contributions (₹)</label>
+                    <label for="retirement_contributions" class="form-label">Retirement Contributions (EPF/PPF/NPS) (₹)</label>
                     <input type="number" class="form-control" id="retirement_contributions" name="retirement_contributions"
                            value="{{ tax_data.retirement_contributions if tax_data else 0 }}"
+                           min="0" step="0.01" data-type="numeric">
+                    <div class="invalid-feedback">
+                        Please enter a valid amount.
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <label for="life_insurance" class="form-label">Life Insurance Premium (₹)</label>
+                    <input type="number" class="form-control" id="life_insurance" name="life_insurance"
+                           value="{{ tax_data.life_insurance if tax_data else 0 }}"
+                           min="0" step="0.01" data-type="numeric">
+                    <div class="invalid-feedback">
+                        Please enter a valid amount.
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <label for="education_loan" class="form-label">Education Loan Interest (₹)</label>
+                    <input type="number" class="form-control" id="education_loan" name="education_loan"
+                           value="{{ tax_data.education_loan if tax_data else 0 }}"
                            min="0" step="0.01" data-type="numeric">
                     <div class="invalid-feedback">
                         Please enter a valid amount.

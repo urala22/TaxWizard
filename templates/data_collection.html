@@ -19,7 +19,7 @@
         <div class="card-body">
             <div class="row g-3">
                 <div class="col-md-6">
-                    <label for="income" class="form-label">Total Income ($)</label>
+                    <label for="income" class="form-label">Total Income (₹)</label>
                     <input type="number" class="form-control" id="income" name="income" 
                            value="{{ tax_data.income if tax_data else '' }}" 
                            placeholder="Enter your total income" 
@@ -64,7 +64,7 @@
         <div class="card-body">
             <div class="row g-3">
                 <div class="col-md-6">
-                    <label for="mortgage_interest" class="form-label">Mortgage Interest ($)</label>
+                    <label for="mortgage_interest" class="form-label">Mortgage Interest (₹)</label>
                     <input type="number" class="form-control" id="mortgage_interest" name="mortgage_interest"
                            value="{{ tax_data.mortgage_interest if tax_data else 0 }}"
                            min="0" step="0.01" data-type="numeric">
@@ -74,7 +74,7 @@
                 </div>
                 
                 <div class="col-md-6">
-                    <label for="property_tax" class="form-label">Property Tax ($)</label>
+                    <label for="property_tax" class="form-label">Property Tax (₹)</label>
                     <input type="number" class="form-control" id="property_tax" name="property_tax"
                            value="{{ tax_data.property_tax if tax_data else 0 }}"
                            min="0" step="0.01" data-type="numeric">
@@ -84,7 +84,7 @@
                 </div>
                 
                 <div class="col-md-6">
-                    <label for="charitable_contributions" class="form-label">Charitable Contributions ($)</label>
+                    <label for="charitable_contributions" class="form-label">Charitable Contributions (₹)</label>
                     <input type="number" class="form-control" id="charitable_contributions" name="charitable_contributions"
                            value="{{ tax_data.charitable_contributions if tax_data else 0 }}"
                            min="0" step="0.01" data-type="numeric">
@@ -94,7 +94,7 @@
                 </div>
                 
                 <div class="col-md-6">
-                    <label for="medical_expenses" class="form-label">Medical Expenses ($)</label>
+                    <label for="medical_expenses" class="form-label">Medical Expenses (₹)</label>
                     <input type="number" class="form-control" id="medical_expenses" name="medical_expenses"
                            value="{{ tax_data.medical_expenses if tax_data else 0 }}"
                            min="0" step="0.01" data-type="numeric">
@@ -104,7 +104,7 @@
                 </div>
                 
                 <div class="col-md-6">
-                    <label for="retirement_contributions" class="form-label">Retirement Contributions ($)</label>
+                    <label for="retirement_contributions" class="form-label">Retirement Contributions (₹)</label>
                     <input type="number" class="form-control" id="retirement_contributions" name="retirement_contributions"
                            value="{{ tax_data.retirement_contributions if tax_data else 0 }}"
                            min="0" step="0.01" data-type="numeric">
@@ -140,7 +140,7 @@
                 </div>
                 
                 <div class="col-md-6">
-                    <label for="business_income" class="form-label">Business Income ($)</label>
+                    <label for="business_income" class="form-label">Business Income (₹)</label>
                     <input type="number" class="form-control" id="business_income" name="business_income"
                            value="{{ tax_data.business_income if tax_data else 0 }}"
                            min="0" step="0.01" data-type="numeric">
@@ -150,7 +150,7 @@
                 </div>
                 
                 <div class="col-md-6">
-                    <label for="business_expenses" class="form-label">Business Expenses ($)</label>
+                    <label for="business_expenses" class="form-label">Business Expenses (₹)</label>
                     <input type="number" class="form-control" id="business_expenses" name="business_expenses"
                            value="{{ tax_data.business_expenses if tax_data else 0 }}"
                            min="0" step="0.01" data-type="numeric">
@@ -170,7 +170,7 @@
         <div class="card-body">
             <div class="row g-3">
                 <div class="col-md-6">
-                    <label for="capital_gains" class="form-label">Capital Gains ($)</label>
+                    <label for="capital_gains" class="form-label">Capital Gains (₹)</label>
                     <input type="number" class="form-control" id="capital_gains" name="capital_gains"
                            value="{{ tax_data.capital_gains if tax_data else 0 }}"
                            min="0" step="0.01" data-type="numeric">
@@ -180,7 +180,7 @@
                 </div>
                 
                 <div class="col-md-6">
-                    <label for="rental_income" class="form-label">Rental Income ($)</label>
+                    <label for="rental_income" class="form-label">Rental Income (₹)</label>
                     <input type="number" class="form-control" id="rental_income" name="rental_income"
                            value="{{ tax_data.rental_income if tax_data else 0 }}"
                            min="0" step="0.01" data-type="numeric">
@@ -190,7 +190,7 @@
                 </div>
                 
                 <div class="col-md-6">
-                    <label for="rental_expenses" class="form-label">Rental Expenses ($)</label>
+                    <label for="rental_expenses" class="form-label">Rental Expenses (₹)</label>
                     <input type="number" class="form-control" id="rental_expenses" name="rental_expenses"
                            value="{{ tax_data.rental_expenses if tax_data else 0 }}"
                            min="0" step="0.01" data-type="numeric">

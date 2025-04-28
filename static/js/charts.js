@@ -108,7 +108,7 @@ function renderDeductionsChart() {
                         label: function(context) {
                             const label = context.label || '';
                             const value = context.raw || 0;
-                            return `${label}: $${value.toLocaleString()}`;
+                            return `${label}: ₹${value.toLocaleString()}`;
                         }
                     }
                 }

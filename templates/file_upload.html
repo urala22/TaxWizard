@@ -150,15 +150,15 @@
                         <h6 class="mb-3">Income Documents</h6>
                         <ul class="list-group list-group-flush mb-4">
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                W-2 (Wage and Tax Statement)
-                                <span class="badge bg-{{ 'success' if tax_documents and any(doc.document_type == 'W-2' for doc in tax_documents) else 'secondary' }} rounded-pill">
-                                    {{ 'Uploaded' if tax_documents and any([doc.document_type == 'W-2' for doc in tax_documents]) else 'Missing' }}
+                                Form 16 (Salary Income)
+                                <span class="badge bg-{{ 'success' if tax_documents and any(doc.document_type == 'Form16' for doc in tax_documents) else 'secondary' }} rounded-pill">
+                                    {{ 'Uploaded' if tax_documents and any([doc.document_type == 'Form16' for doc in tax_documents]) else 'Missing' }}
                                 </span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                1099-MISC (Miscellaneous Income)
-                                <span class="badge bg-{{ 'success' if tax_documents and any([doc.document_type == '1099' for doc in tax_documents]) else 'secondary' }} rounded-pill">
-                                    {{ 'Uploaded' if tax_documents and any([doc.document_type == '1099' for doc in tax_documents]) else 'Missing' }}
+                                Form 16A (Other Income)
+                                <span class="badge bg-{{ 'success' if tax_documents and any([doc.document_type == 'Form16A' for doc in tax_documents]) else 'secondary' }} rounded-pill">
+                                    {{ 'Uploaded' if tax_documents and any([doc.document_type == 'Form16A' for doc in tax_documents]) else 'Missing' }}
                                 </span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -174,9 +174,9 @@
                         <h6 class="mb-3">Deduction Documents</h6>
                         <ul class="list-group list-group-flush mb-4">
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                1098 (Mortgage Interest)
-                                <span class="badge bg-{{ 'success' if tax_documents and any([doc.document_type == '1098' for doc in tax_documents]) else 'secondary' }} rounded-pill">
-                                    {{ 'Uploaded' if tax_documents and any([doc.document_type == '1098' for doc in tax_documents]) else 'Missing' }}
+                                Home Loan Interest Certificate
+                                <span class="badge bg-{{ 'success' if tax_documents and any([doc.document_type == 'HomeLoan' for doc in tax_documents]) else 'secondary' }} rounded-pill">
+                                    {{ 'Uploaded' if tax_documents and any([doc.document_type == 'HomeLoan' for doc in tax_documents]) else 'Missing' }}
                                 </span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">

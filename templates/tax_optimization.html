@@ -24,7 +24,7 @@
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         Income:
-                        <span class="badge bg-success rounded-pill">${{ tax_data.income|round(2) }}</span>
+                        <span class="badge bg-success rounded-pill">₹{{ tax_data.income|round(2) }}</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         Self-Employed:
@@ -38,7 +38,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Potential Savings Card -->
     <div class="col-md-8">
         <div class="card dashboard-card">
@@ -47,7 +47,7 @@
                 <div class="row align-items-center mt-3">
                     <div class="col-md-5">
                         <div class="text-center">
-                            <div class="display-4 text-success">${{ total_savings|round(2) }}</div>
+                            <div class="display-4 text-success">₹{{ total_savings|round(2) }}</div>
                             <p class="lead">Total Potential Savings</p>
                         </div>
                     </div>
@@ -84,7 +84,7 @@
                                     <p class="mb-2">{{ opt.description }}</p>
                                 </div>
                                 <div class="col-md-3 text-md-end">
-                                    <div class="potential-savings h5 text-success">${{ opt.potential_savings|round(2) }}</div>
+                                    <div class="potential-savings h5 text-success">₹{{ opt.potential_savings|round(2) }}</div>
                                     <small class="text-muted">Potential Savings</small>
                                 </div>
                             </div>

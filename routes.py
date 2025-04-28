@@ -14,10 +14,11 @@ from tax_calculator import calculate_tax_liability, get_tax_optimization_strateg
 from error_detector import detect_errors_in_tax_data
 
 # Configure file uploads
-UPLOAD_FOLDER = 'uploads'
+UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'uploads')
 if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
+    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max-limit
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max-limit
 
 @app.route('/')
@@ -253,6 +254,18 @@ def file_upload():
             
             db.session.add(new_document)
             db.session.commit()
+
+            # Process Form 16 for automatic field population
+            if document_type == 'Form16':
+                try:
+                    from utils import extract_form16_data
+                    tax_data = extract_form16_data(file_path)
+                    if tax_data:
+                        session['extracted_tax_data'] = tax_data
+                        flash('Tax data extracted successfully from Form 16', 'success')
+                    return redirect(url_for('data_collection'))
+                except Exception as e:
+                    logging.error(f"Error processing Form 16: {str(e)}")
             
             flash('File uploaded successfully', 'success')
             return redirect(url_for('dashboard'))

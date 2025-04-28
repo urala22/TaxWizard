@@ -263,22 +263,9 @@ def file_upload():
             db.session.add(new_document)
             db.session.commit()
 
-            # Process Form 16 and other documents for automatic field population
-            if document_type in ['Form16', 'Form16A', 'PaySlip', 'TaxStatement']:
-                try:
-                    from utils import extract_form16_data
-                    tax_data = extract_form16_data(file_path)
-                    if tax_data:
-                        session['extracted_tax_data'] = tax_data
-                        flash(f'Tax data extracted successfully from {document_type}', 'success')
-                    else:
-                        flash('No data could be extracted from the document. Please check the file format and quality.', 'warning')
-                    return redirect(url_for('data_collection'))
-                except Exception as e:
-                    error_msg = str(e)
-                    logging.error(f"Error processing document: {error_msg}")
-                    flash(f'Error processing document: {error_msg}', 'danger')
-                    return redirect(url_for('file_upload'))
+            # Basic file upload without OCR processing
+            flash('File uploaded successfully', 'success')
+            return redirect(url_for('dashboard'))
             
             flash('File uploaded successfully', 'success')
             return redirect(url_for('dashboard'))

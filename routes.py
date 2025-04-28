@@ -109,6 +109,11 @@ def dashboard():
                           optimizations=optimizations,
                           current_year=current_year)
 
+@app.route('/tax_refund_prediction')
+@login_required
+def tax_refund_prediction():
+    return render_template('tax_refund_prediction.html')
+
 @app.route('/predict_refund', methods=['POST'])
 @login_required
 def predict_refund():

@@ -245,37 +245,61 @@
             </div>
             <div class="modal-body">
                 <div class="alert alert-info">
-                    Enter your details to get an AI-powered prediction of your maximum possible tax refund.
+                    <i class="fas fa-info-circle me-2"></i>
+                    Enter your financial details below to get an AI-powered prediction of your maximum possible tax refund.
                 </div>
                 <form id="refundPredictionForm" class="row g-3">
                     <div class="col-md-6">
-                        <label class="form-label">Annual Income (₹)</label>
-                        <input type="number" class="form-control" name="annual_income" required>
+                        <div class="form-floating">
+                            <input type="number" class="form-control" id="annual_income" name="annual_income" placeholder="0" required>
+                            <label for="annual_income">Annual Income (₹)</label>
+                        </div>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Investment under 80C (₹)</label>
-                        <input type="number" class="form-control" name="investment_80C" required>
+                        <div class="form-floating">
+                            <input type="number" class="form-control" id="investment_80C" name="investment_80C" placeholder="0" required>
+                            <label for="investment_80C">Investment under 80C (₹)</label>
+                        </div>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Insurance Premium 80D (₹)</label>
-                        <input type="number" class="form-control" name="insurance_premium_80D" required>
+                        <div class="form-floating">
+                            <input type="number" class="form-control" id="insurance_premium_80D" name="insurance_premium_80D" placeholder="0" required>
+                            <label for="insurance_premium_80D">Insurance Premium 80D (₹)</label>
+                        </div>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Home Loan Interest (₹)</label>
-                        <input type="number" class="form-control" name="home_loan_interest" required>
+                        <div class="form-floating">
+                            <input type="number" class="form-control" id="home_loan_interest" name="home_loan_interest" placeholder="0" required>
+                            <label for="home_loan_interest">Home Loan Interest (₹)</label>
+                        </div>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Education Loan Interest (₹)</label>
-                        <input type="number" class="form-control" name="education_loan_interest" required>
+                        <div class="form-floating">
+                            <input type="number" class="form-control" id="education_loan_interest" name="education_loan_interest" placeholder="0" required>
+                            <label for="education_loan_interest">Education Loan Interest (₹)</label>
+                        </div>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">House Rent Paid (₹)</label>
-                        <input type="number" class="form-control" name="house_rent_paid" required>
+                        <div class="form-floating">
+                            <input type="number" class="form-control" id="house_rent_paid" name="house_rent_paid" placeholder="0" required>
+                            <label for="house_rent_paid">House Rent Paid (₹)</label>
+                        </div>
                     </div>
                 </form>
                 <div id="predictionResult" class="mt-4 text-center" style="display: none;">
-                    <h4>Estimated Maximum Tax Refund</h4>
-                    <h2 class="text-success">₹<span id="refundAmount">0</span></h2>
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h4 class="card-title mb-3">Estimated Maximum Tax Refund</h4>
+                            <div class="display-4 text-success mb-3">₹<span id="refundAmount">0</span></div>
+                            <p class="text-muted mb-0">This is an AI-powered estimate based on your inputs</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="loadingIndicator" class="text-center mt-4" style="display: none;">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2">Calculating your maximum refund...</p>
                 </div>
             </div>
             <div class="modal-footer">
@@ -291,6 +315,11 @@
 <script>
 async function predictRefund() {
     const form = document.getElementById('refundPredictionForm');
+    if (!form.checkValidity()) {
+        form.classList.add('was-validated');
+        return;
+    }
+
     const formData = new FormData(form);
     const data = {
         annual_income: parseFloat(formData.get('annual_income')),
@@ -301,7 +330,13 @@ async function predictRefund() {
         house_rent_paid: parseFloat(formData.get('house_rent_paid') || '0')
     };
     
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    const predictionResult = document.getElementById('predictionResult');
+    
     try {
+        loadingIndicator.style.display = 'block';
+        predictionResult.style.display = 'none';
+        
         const response = await fetch('/predict_refund', {
             method: 'POST',
             headers: {
@@ -312,12 +347,17 @@ async function predictRefund() {
         
         const result = await response.json();
         document.getElementById('refundAmount').textContent = result.predicted_refund.toLocaleString();
-        document.getElementById('predictionResult').style.display = 'block';
+        
+        loadingIndicator.style.display = 'none';
+        predictionResult.style.display = 'block';
     } catch (error) {
         console.error('Error:', error);
-        alert('Error calculating refund. Please try again.');
-    }
-}ain.');
+        loadingIndicator.style.display = 'none';
+        const errorAlert = document.createElement('div');
+        errorAlert.className = 'alert alert-danger mt-3';
+        errorAlert.innerHTML = '<i class="fas fa-exclamation-circle me-2"></i>Error calculating refund. Please try again.';
+        form.parentNode.insertBefore(errorAlert, form.nextSibling);
+        setTimeout(() => errorAlert.remove(), 5000);
     }
 }
 </script>

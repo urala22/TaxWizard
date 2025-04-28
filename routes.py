@@ -263,14 +263,14 @@ def file_upload():
             db.session.add(new_document)
             db.session.commit()
 
-            # Process Form 16 for automatic field population
-            if document_type == 'Form16':
+            # Process Form 16 and other documents for automatic field population
+            if document_type in ['Form16', 'Form16A', 'PaySlip', 'TaxStatement']:
                 try:
                     from utils import extract_form16_data
                     tax_data = extract_form16_data(file_path)
                     if tax_data:
                         session['extracted_tax_data'] = tax_data
-                        flash('Tax data extracted successfully from Form 16', 'success')
+                        flash(f'Tax data extracted successfully from {document_type}', 'success')
                     return redirect(url_for('data_collection'))
                 except Exception as e:
                     logging.error(f"Error processing Form 16: {str(e)}")

@@ -4,31 +4,50 @@ import re
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'csv', 'xls', 'xlsx'}
 
 def extract_form16_data(file_path):
-    """Extract tax data from Form 16"""
-    # This is a basic implementation - you may want to use OCR or PDF parsing libraries
-    # for more sophisticated extraction
+    """Extract tax data from Form 16 using OCR and text parsing"""
     try:
-        import PyPDF2
-        tax_data = {}
+        import magic
+        import pytesseract
+        from pdf2image import convert_from_path
+        import re
         
-        with open(file_path, 'rb') as file:
-            reader = PyPDF2.PdfReader(file)
+        tax_data = {}
+        file_type = magic.from_file(file_path, mime=True)
+        
+        if file_type == 'application/pdf':
+            # Convert PDF to images
+            images = convert_from_path(file_path)
             text = ""
-            for page in reader.pages:
-                text += page.extract_text()
-            
-            # Basic extraction - you'll need to adjust patterns based on your Form 16 format
-            income_pattern = r"Gross Total Income.*?₹\s*([\d,]+)"
-            tax_pattern = r"Total Tax Payable.*?₹\s*([\d,]+)"
-            
-            import re
-            income_match = re.search(income_pattern, text)
-            if income_match:
-                tax_data['income'] = float(income_match.group(1).replace(',', ''))
-            
-            tax_match = re.search(tax_pattern, text)
-            if tax_match:
-                tax_data['tax_payable'] = float(tax_match.group(1).replace(',', ''))
+            for image in images:
+                text += pytesseract.image_to_string(image)
+        elif file_type.startswith('image/'):
+            # Direct OCR for images
+            text = pytesseract.image_to_string(file_path)
+        else:
+            # Fallback to PDF text extraction
+            import PyPDF2
+            with open(file_path, 'rb') as file:
+                reader = PyPDF2.PdfReader(file)
+                text = ""
+                for page in reader.pages:
+                    text += page.extract_text()
+        
+        # Extract data using regex patterns
+        patterns = {
+            'income': r"Gross Total Income.*?₹\s*([\d,]+)",
+            'tax_payable': r"Total Tax Payable.*?₹\s*([\d,]+)",
+            'mortgage_interest': r"Home Loan Interest.*?₹\s*([\d,]+)",
+            'property_tax': r"Property Tax.*?₹\s*([\d,]+)",
+            'charitable_contributions': r"Charitable Donations.*?₹\s*([\d,]+)",
+            'retirement_contributions': r"(EPF|PPF|NPS).*?₹\s*([\d,]+)",
+            'medical_expenses': r"Medical Expenses.*?₹\s*([\d,]+)"
+        }
+        
+        for field, pattern in patterns.items():
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                value = match.group(1) if field != 'retirement_contributions' else match.group(2)
+                tax_data[field] = float(value.replace(',', ''))
                 
         return tax_data
     except Exception as e:

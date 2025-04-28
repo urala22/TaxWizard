@@ -222,6 +222,8 @@ def data_collection():
     
     return render_template('data_collection.html', tax_data=existing_data)
 
+from datetime import datetime
+
 @app.route('/file_upload', methods=['GET', 'POST'])
 @login_required
 def file_upload():
@@ -278,7 +280,7 @@ def file_upload():
         else:
             flash('File type not allowed', 'danger')
     
-    return render_template('file_upload.html')
+    return render_template('file_upload.html', datetime=datetime)
 
 @app.route('/tax_advice')
 @login_required

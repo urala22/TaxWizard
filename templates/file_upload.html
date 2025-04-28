@@ -23,14 +23,15 @@
                         <label for="document_type" class="form-label">Document Type</label>
                         <select class="form-select" id="document_type" name="document_type" required>
                             <option value="" selected disabled>Select document type</option>
-                            <option value="W-2">W-2 (Wage and Tax Statement)</option>
-                            <option value="1099">1099 (Miscellaneous Income)</option>
-                            <option value="1098">1098 (Mortgage Interest Statement)</option>
-                            <option value="5498">5498 (IRA Contribution Information)</option>
-                            <option value="1095-A">1095-A (Health Insurance Marketplace Statement)</option>
-                            <option value="Schedule_C">Schedule C (Profit or Loss from Business)</option>
-                            <option value="Schedule_D">Schedule D (Capital Gains and Losses)</option>
-                            <option value="Schedule_E">Schedule E (Supplemental Income and Loss)</option>
+                            <option value="Form16">Form 16 (Salary Income)</option>
+                            <option value="Form16A">Form 16A (TDS on Income other than Salary)</option>
+                            <option value="Form26AS">Form 26AS (Tax Credit Statement)</option>
+                            <option value="HomeLoan">Home Loan Interest Certificate</option>
+                            <option value="Form10E">Form 10E (Income Averaging Relief)</option>
+                            <option value="PPF">PPF Statement</option>
+                            <option value="LIC">LIC Premium Receipt</option>
+                            <option value="MedicalBills">Medical Bills and Insurance</option>
+                            <option value="Form12BA">Form 12BA (Perquisites Statement)</option>
                             <option value="Other">Other</option>
                         </select>
                         <div class="invalid-feedback">
@@ -175,20 +176,20 @@
                         <ul class="list-group list-group-flush mb-4">
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Home Loan Interest Certificate
-                                <span class="badge bg-{{ 'success' if tax_documents and any([doc.document_type == 'HomeLoan' for doc in tax_documents]) else 'secondary' }} rounded-pill">
-                                    {{ 'Uploaded' if tax_documents and any([doc.document_type == 'HomeLoan' for doc in tax_documents]) else 'Missing' }}
+                                <span class="badge bg-{{ 'success' if tax_documents and tax_documents|selectattr('document_type', 'equalto', 'HomeLoan')|list|length else 'secondary' }} rounded-pill">
+                                    {{ 'Uploaded' if tax_documents and tax_documents|selectattr('document_type', 'equalto', 'HomeLoan')|list|length else 'Missing' }}
                                 </span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Charitable Donation Receipts
-                                <span class="badge bg-{{ 'success' if tax_documents and any(['Charitable' in doc.description for doc in tax_documents if doc.description]) else 'secondary' }} rounded-pill">
-                                    {{ 'Uploaded' if tax_documents and any(['Charitable' in doc.description for doc in tax_documents if doc.description]) else 'Missing' }}
+                                <span class="badge bg-{{ 'success' if tax_documents and tax_documents|selectattr('description', 'defined')|selectattr('description', 'search', 'Charitable')|list|length else 'secondary' }} rounded-pill">
+                                    {{ 'Uploaded' if tax_documents and tax_documents|selectattr('description', 'defined')|selectattr('description', 'search', 'Charitable')|list|length else 'Missing' }}
                                 </span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Medical Expense Records
-                                <span class="badge bg-{{ 'success' if tax_documents and any(['Medical' in doc.description for doc in tax_documents if doc.description]) else 'secondary' }} rounded-pill">
-                                    {{ 'Uploaded' if tax_documents and any(['Medical' in doc.description for doc in tax_documents if doc.description]) else 'Missing' }}
+                                <span class="badge bg-{{ 'success' if tax_documents and tax_documents|selectattr('description', 'defined')|selectattr('description', 'search', 'Medical')|list|length else 'secondary' }} rounded-pill">
+                                    {{ 'Uploaded' if tax_documents and tax_documents|selectattr('description', 'defined')|selectattr('description', 'search', 'Medical')|list|length else 'Missing' }}
                                 </span>
                             </li>
                         </ul>
